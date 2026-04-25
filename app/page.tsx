@@ -32,7 +32,7 @@ export default function Home() {
           Get Started for Free
         </button>
         <button className="bg-white text-[#151C27] font-bold py-8 px-16 rounded-lg hover:opacity-90 transition-opacity" >
-          See how it works
+          See How It Works
         </button>
       </div>
     </main>
