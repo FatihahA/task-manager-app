@@ -59,6 +59,20 @@ app.put('/tasks/:id', async (req, res) => {
 
 });
 
+// 'Remove Task' endpoint - DELETE
+app.delete('/tasks/:id', async (req, res) => {
+
+  try {
+    const { id } = req.params;
+    const deleteTask = await pool.query('DELETE FROM tasks WHERE id = $1', [id]);
+   
+    res.json("Task was deleted!");
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+
+});
 
 
 
