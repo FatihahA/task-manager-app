@@ -35,4 +35,32 @@ app.get('/tasks', async (req, res) => {
   }
 });
 
+// 'Mark a task as completed or change the title' endpoint - UPDATE
+app.put('/tasks/:id', async (req, res) => {
+
+  try {
+    const { id } = req.params; // Get ID from the URL (e.g., /tasks/1)
+    const { is_completed } = req.body; // Get the new status from the JSON body
+
+    const updateTask = await pool.query(
+      'UPDATE tasks SET is_completed = $1 WHERE id = $2 RETURNING *',
+      [is_completed, id]
+    );
+
+    if (updateTask.rows.length === 0) {
+      return res.status(404).json("Task not found");
+    }
+
+    res.json("Task was updated!");
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+
+});
+
+
+
+
 app.listen(3000, () => console.log('Server running on port 3000'));
+
