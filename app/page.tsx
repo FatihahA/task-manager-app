@@ -1,3 +1,5 @@
+import Linl from 'next/link';
+
 export default function Home() {
   return (
     <main  className = 'min-h-screen bg-[#EEDFFB]'>
@@ -8,10 +10,10 @@ export default function Home() {
           <div className="text-[#9333EA] text-[24px] font-bold" style={{ fontFamily: 'Inter, sans-serif' }}>TaskPilot</div>
         </div>
         <div className="flex gap-8 text-[#6B7280] font-normal ">
-          <p className="hover:text-[#630ED4] cursor-pointer">Dashboard</p>
-          <p className="hover:text-[#630ED4] cursor-pointer">Schedule</p>
-          <p className="hover:text-[#630ED4] cursor-pointer">Course</p>
-          <p className="hover:text-[#630ED4] cursor-pointer">Focus</p>
+          <p className="hover:text-[#7C3AED] cursor-pointer">Dashboard</p>
+          <p className="hover:text-[#7C3AED] cursor-pointer">Schedule</p>
+          <p className="hover:text-[#7C3AED] cursor-pointer">Course</p>
+          <p className="hover:text-[#7C3AED] cursor-pointer">Focus</p>
         </div>
       </div>
 
@@ -24,12 +26,12 @@ export default function Home() {
         </p>
 
         <h1 className="text-[48px] font-bold text-[#151C27] leading-tight mt-6" style={{ fontFamily: 'Inter, sans-serif' }}>
-          Experience Calm <br /> Productivity with<br/><span className="text-[#630ED4]">TaskPilot</span>
+          Experience Calm <br /> Productivity with<br/><span className="text-[#7C3AED]">TaskPilot</span>
         </h1>
         <p className="text-[18px] font-normal text-[#635B6E] leading-tight mt-4" style={{ fontFamily: 'Inter, sans-serif'}}>Simplify your student life. Manage tasks, master deep <br /> focus, and track your academic journey in an environment <br /> designed for peace of mind.</p>
       </div>
       <div className="flex gap-8 p-10 pb-0 mb-6">
-        <button className="bg-[#630ED4] text-white font-bold py-8 px-16 rounded-lg hover:opacity-90 transition-opacity" >
+        <button className="bg-[#7C3AED] text-white font-bold py-8 px-16 rounded-lg hover:opacity-90 transition-opacity" >
           Get Started for Free
         </button>
         <button className="bg-white text-[#151C27] font-bold py-8 px-16 rounded-lg hover:opacity-90 transition-opacity" >
@@ -37,7 +39,7 @@ export default function Home() {
         </button>
       </div>
       <div className="flex px-10 mt-2 mb-16">
-        <p className="text-[#696174] text-normal">Already have an account? <span className="font-bold cursor-pointer hover:text-[#630ED4] hover:underline">Log in</span></p>
+        <p className="text-[#696174] text-normal">Already have an account? <span className="font-bold cursor-pointer hover:text-[#7C3AED] hover:underline">Log in</span></p>
       </div>
 
       {/*FEATURES SECTION */}
@@ -50,10 +52,10 @@ export default function Home() {
       { /* THE CARD SECTION */ }
         <div className="flex flex-wrap justify-center gap-y-8 gap-x-54"> {/* CARD SPACING*/ }
 
-          {/* FOCUS CARF*/ }
-          <div className="bg-white p-10 rounded-xl border border-[#CCC3D8] shadow-sm max-w-[400px]">
+          {/* FOCUS CARD*/ }
+          <div className="bg-[#F3EAFA] p-10 rounded-xl border border-[#CCC3D8] shadow-sm max-w-[400px]">
             <div className="w-12 h-12 bg-[#EADDFF] rounded-xl flex items-center justify-center mb-2 ">
-              <svg className="w-6 h-6 text-[#630ED4]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-6 h-6 text-[#7C3AED]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>          
             </div>
@@ -65,7 +67,7 @@ export default function Home() {
           {/* END OF CODE FOR FOCUS CARD */ }
 
           {/*PERFOMANCE CARD */ }
-          <div className="bg-white p-10 rounded-xl border border-[#CCC3D8] shadow-sm max-w-[400px]">
+          <div className="bg-[#F3EAFA] p-10 rounded-xl border border-[#CCC3D8] shadow-sm max-w-[400px]">
             <div className="w-12 h-12 bg-[#76f4b6] rounded-xl flex flex-col items-center justify-center mb-2 ">
               {/* Graph Icon SVG */}
               <svg className="w-6 h-6 text-[#151C27]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -80,7 +82,7 @@ export default function Home() {
             {/* PROGRESS BAR SECTION */ }
             <div className="w-full">
               <div className="w-full h-2 bg-[#E9DEF5] rounded-full overflow-hidden ">
-                <div className="bg-[#630ED4] h-full w-[75%] rounded-full "></div>
+                <div className="bg-[#7C3AED] h-full w-[75%] rounded-full "></div>
               </div>
               <div className="flex justify-between text-[12px] text-[#6B7280] font-normal mt-3">
                 <span>Weekly Goal</span>
@@ -92,10 +94,10 @@ export default function Home() {
 
 
           {/* TASK MANAGEMENT CARD */ }
-          <div className="bg-white p-10 rounded-xl border border-[#CCC3D8] shadow-sm max-w-[400px]">
+          <div className="bg-[#F3EAFA] p-10 rounded-xl border border-[#CCC3D8] shadow-sm max-w-[400px]">
             <div className="w-12 h-12 bg-[#EADDFF] rounded-xl flex items-center justify-center mb-2">
               {/* Clipboard/List Icon */}
-              <svg className="w-6 h-6 text-[#630ED4]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-6 h-6 text-[#7C3AED]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
               </svg>
             </div>
@@ -108,7 +110,7 @@ date, or energy level.
             {/* The Checklist Items */}
             <div className="space-y-3 gap-2 pt-4">
               <div className="flex items-center gap-3 opacity-50 line-through">
-                <div className="w-5 h-5 border border-[#630ED4] rounded flex items-center justify-center bg-[#630ED4]">
+                <div className="w-5 h-5 border border-[#7C3AED] rounded flex items-center justify-center bg-[#7C3AED]">
                   <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>
                 </div>
                 <span className="text-sm text-[#635B6E]">Submit Bio Essay</span>
@@ -123,10 +125,10 @@ date, or energy level.
 
 
           {/* RESOURCE HUB CARD */ }
-          <div className="bg-white p-10 rounded-xl border border-[#CCC3D8] shadow-sm max-w-[400px]">
+          <div className="bg-[#F3EAFA] p-10 rounded-xl border border-[#CCC3D8] shadow-sm max-w-[400px]">
             <div className="w-12 h-12 bg-[#EADDFF] rounded-xl flex items-center justify-center mb-2">
               {/* Folder Icon */}
-              <svg className="w-6 h-6 text-[#630ED4]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-6 h-6 text-[#7C3AED]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
               </svg>
             </div>
@@ -175,10 +177,10 @@ date, or energy level.
           <p className="text-[32px] font-bold text-[#151C27] mb-2">Ready to find your focus?</p>
           <p className="text-[18px] font-normal text-[#635B6E]">Join 50,000+ students who are reclaiming their time and peace of mind.</p>
           <div className="flex items-center gap-8 mt-4 p-10 pb-0 mb-6 justify-center">
-                <button className="bg-[#630ED4] text-white font-bold py-4 px-8 rounded-xl hover:opacity-90 transition-opacity">
+                <button className="bg-[#7C3AED] text-white font-bold py-4 px-8 rounded-xl hover:opacity-90 transition-opacity">
                   Create your free account
                 </button>
-                <p className="text-[#630ED4] font-bold cursor-pointer hover:underline">
+                <p className="text-[#7C3AED] font-bold cursor-pointer hover:underline">
                   Explore Premium Plans
                 </p>
           </div>
@@ -186,14 +188,14 @@ date, or energy level.
 
         <footer className="w-full bg-white px-12 py-8 border-t border-gray-100 flex justify-between items-center">
           <div className="flex flex-col gap-1">
-              <div className="text-[#630ED4] text-[20px] font-bold">TaskPilot</div>
+              <div className="text-[#7C3AED] text-[20px] font-bold">TaskPilot</div>
               <p className="text-[#6B7280] text-[13px]">© 2026 TaskPilot • Breathable Productivity</p>
           </div>
 
           <div className="flex gap-8 text-[14px] text-[#6B7280]">
-              <p className="hover:text-[#630ED4] cursor-pointer">Privacy Policy</p>
-              <p className="hover:text-[#630ED4] cursor-pointer">Terms of Service</p>
-              <p className="hover:text-[#630ED4] cursor-pointer">Student Discounts</p>
+              <p className="hover:text-[#7C3AED] cursor-pointer">Privacy Policy</p>
+              <p className="hover:text-[#7C3AED] cursor-pointer">Terms of Service</p>
+              <p className="hover:text-[#7C3AED] cursor-pointer">Student Discounts</p>
           </div>
 
           <div className="flex gap-4">
