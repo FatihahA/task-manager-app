@@ -64,9 +64,12 @@ export default function Home() {
       <div className="flex px-10 mt-2 mb-16">
         <p className="text-[#696174] text-normal">
           Already have an account?{" "}
-          <span className="font-bold cursor-pointer hover:text-[#7C3AED] hover:underline">
+          <Link
+            href="/login"
+            className="font-bold hover:text-[#7C3AED] hover:underline"
+          >
             Log in
-          </span>
+          </Link>
         </p>
       </div>
 
