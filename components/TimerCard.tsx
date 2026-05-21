@@ -69,6 +69,22 @@ export default function TimerCard({ currentTask, focusDuration, breakDuration, a
           autoStartBreaks,
         ]);
 
+
+        const handleSkip = () => {
+          const nextMode =
+            mode === "focus" ? "break" : "focus";
+
+          setMode(nextMode);
+
+          setTimeLeft(
+            (nextMode === "focus"
+              ? focusDuration
+              : breakDuration) * 60
+          );
+        
+          setIsRunning(false);
+      }; 
+
   return (
     <article className="rounded-[36px] border border-purple-100 bg-[#F4ECF8] p-12 shadow-[0_8px_18px_rgba(0,0,0,0.08)]">
       <div className="flex flex-col items-center text-center">
@@ -128,6 +144,7 @@ export default function TimerCard({ currentTask, focusDuration, breakDuration, a
 
           <button
             type="button"
+            onClick={handleSkip}
             className="flex h-16 w-16 items-center justify-center rounded-full border border-[#CDB4F8] text-[#9B6AF3] transition hover:bg-[#EBDDFA]"
           >
             <SkipForward size={28} />

@@ -3,7 +3,6 @@ import {useState} from "react";
 
 import AmbientSoundsPanel from "@/components/AmbientSoundsPanel";
 import FocusTasks from "@/components/Tasks";
-import Header from "@/components/Header";
 import SoundSettingsPanel from "@/components/SoundSettingsPanel";
 import Sidebar from "@/components/Sidebar";
 import TimerCard from "@/components/TimerCard";
@@ -20,7 +19,7 @@ export default function Page() {
       <Sidebar />
 
       <main className="flex-1 overflow-y-auto bg-[#F3EAF8]">
-        <Header />
+     
 
         <section className="grid grid-cols-[1fr_360px] gap-8 p-10">
           <div className="space-y-8">

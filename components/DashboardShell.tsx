@@ -84,7 +84,7 @@ export default function DashboardShell({
       },
       {
         label: "Focus timer",
-        href: "#",
+        href: "/timer",
         icon: <Clock size={18} strokeWidth={2} />,
       },
       {
