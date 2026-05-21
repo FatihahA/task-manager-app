@@ -24,9 +24,11 @@ export default function Page() {
 
         <section className="grid grid-cols-[1fr_360px] gap-8 p-10">
           <div className="space-y-8">
-            <TimerCard currentTask="Create react nav bar component"
+            <TimerCard 
+            currentTask="Create react nav bar component"
             focusDuration={focusDuration}
             breakDuration={breakDuration}
+            autoStartBreaks={autoStartBreaks}
              />
 
             <AmbientSoundsPanel />
