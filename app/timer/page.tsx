@@ -1,52 +1,54 @@
 "use client";
-import {useState} from "react";
+
+import { useState } from "react";
 
 import AmbientSoundsPanel from "@/components/AmbientSoundsPanel";
+import DashboardShell from "@/components/DashboardShell";
 import FocusTasks from "@/components/Tasks";
 import SoundSettingsPanel from "@/components/SoundSettingsPanel";
-import Sidebar from "@/components/Sidebar";
 import TimerCard from "@/components/TimerCard";
 
 export default function Page() {
-  
-  const [focusDuration, setFocusDuration] = useState(25);
-  const [breakDuration, setBreakDuration] = useState(5);
+  const [focusDuration, setFocusDuration] =
+    useState(25);
+
+  const [breakDuration, setBreakDuration] =
+    useState(5);
+
   const [autoStartBreaks, setAutoStartBreaks] =
-  useState(false);
+    useState(false);
 
   return (
-    <div className="flex h-screen overflow-hidden">
-      <Sidebar />
-
-      <main className="flex-1 overflow-y-auto bg-[#F3EAF8]">
-     
-
-        <section className="grid grid-cols-[1fr_360px] gap-8 p-10">
-          <div className="space-y-8">
-            <TimerCard 
+    <DashboardShell>
+      <section className="grid grid-cols-[1fr_360px] gap-8">
+        {/* LEFT SIDE */}
+        <div className="space-y-8">
+          <TimerCard
             currentTask="Create react nav bar component"
             focusDuration={focusDuration}
             breakDuration={breakDuration}
             autoStartBreaks={autoStartBreaks}
-             />
+          />
 
-            <AmbientSoundsPanel />
-          </div>
+          <AmbientSoundsPanel />
+        </div>
 
-          <div className="space-y-8">
-            <FocusTasks />
+        {/* RIGHT SIDE */}
+        <div className="space-y-8">
+          <FocusTasks />
 
-            <SoundSettingsPanel
-              focusDuration={focusDuration}
-              breakDuration={breakDuration}
-              setFocusDuration={setFocusDuration}
-              setBreakDuration={setBreakDuration}
-              autoStartBreaks={autoStartBreaks}
-              setAutoStartBreaks={setAutoStartBreaks}
-              />
-          </div>
-        </section>
-      </main>
-    </div>
+          <SoundSettingsPanel
+            focusDuration={focusDuration}
+            breakDuration={breakDuration}
+            setFocusDuration={setFocusDuration}
+            setBreakDuration={setBreakDuration}
+            autoStartBreaks={autoStartBreaks}
+            setAutoStartBreaks={
+              setAutoStartBreaks
+            }
+          />
+        </div>
+      </section>
+    </DashboardShell>
   );
 }
