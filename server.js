@@ -1,32 +1,51 @@
-import express, { json } from "express"
-import { task as _task } from "./db"
-import taskRoutes from "./route_tasks.js"
+import express, { json } from 'express'
+import cors from 'cors'
+import cron from 'node-cron'
+import prisma from "./db.js"
+import taskRoutes from './routes/route_tasks.js'
+import taskListsRoutes from './routes/routes.js'
+import groupRoutes from './routes/group_routes.js'
+import {runScheduler} from './scheduler.js'
 
 const app = express()
+const PORT = process.env.PORT || 3000
+
 app.use(json())
+app.use(cors())
 
 app.get("/", (req, res) => {
-    res.send("Task system API running")
+    res.send("Task Management API is running")
 })
 
-app.post("/tasks", async (req, res) => {
-    const {title, deadline, taskListId} = req.body
-    try {
-        const task = await _task.create({
-            data:{
-                title,
-                deadline: deadline ? new Date(deadline) : null,
-                taskListId
+//ROUTES
+app.use("/api/tasks", taskRoutes)
+app.use("/api/tasklists", taskListsRoutes)
+app.use("/api/groups", groupRoutes)
+
+//Scheduler ; runs midnight every day
+// Generates daily + weekly lists and cleans up expired ones
+// Requires: npm install node-cron
+cron.schedule('0 0 * * *', () => {
+    console.log('Running scheduled task');
+    runScheduler();
+});
+
+//Trash cleanup; hard delete after 30 days
+async function purgeOldTrash() {
+    const cutoff = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000) // 30 days ago
+    const deleted = await prisma.task.deleteMany({
+        where: {
+            deletedAt: {
+                lte: cutoff
             }
-        }) 
-        res.json(task)
-    } catch (error) {
-        res.status(500).json({error: "Failed task creation"})
-    }
-})
+        }
+    });
+    if (deleted.count > 0) {
+    console.log(`Purged ${deleted.count} old tasks from trash`);
+} }
 
-app.use("/tasks", taskRoutes)
+purgeOldTrash();
 
-app.listen(5432, () => {
-    console.log("Server running on port 5432")
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`)
 })
