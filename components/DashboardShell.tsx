@@ -47,7 +47,11 @@ export default function DashboardShell({
 
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const userMenuRef = useRef<HTMLDivElement | null>(null);
-  const excludedRoutes = ["/dashboard/timer", "/dashboard/folders"];
+  const excludedRoutes = [
+    "/dashboard/timer",
+    "/dashboard/folders",
+    "/settings",
+  ];
 
   useEffect(() => {
     function onPointerDown(e: PointerEvent) {
