@@ -51,9 +51,12 @@ export default function Home() {
         </p>
       </div>
       <div className="flex gap-8 p-10 pb-0 mb-6">
-        <button className="bg-[#7C3AED] text-white font-bold py-8 px-16 rounded-lg hover:opacity-90 transition-opacity">
+        <Link
+          href="/signup"
+          className="inline-flex items-center justify-center bg-[#7C3AED] text-white font-bold py-8 px-16 rounded-lg hover:opacity-90 transition-opacity"
+        >
           Get Started for Free
-        </button>
+        </Link>
         <button className="bg-white text-[#151C27] font-bold py-8 px-16 rounded-lg hover:opacity-90 transition-opacity">
           See How It Works
         </button>
@@ -61,9 +64,12 @@ export default function Home() {
       <div className="flex px-10 mt-2 mb-16">
         <p className="text-[#696174] text-normal">
           Already have an account?{" "}
-          <span className="font-bold cursor-pointer hover:text-[#7C3AED] hover:underline">
+          <Link
+            href="/login"
+            className="font-bold hover:text-[#7C3AED] hover:underline"
+          >
             Log in
-          </span>
+          </Link>
         </p>
       </div>
 
@@ -296,9 +302,12 @@ export default function Home() {
               mind.
             </p>
             <div className="flex items-center gap-8 mt-4 p-10 pb-0 mb-6 justify-center">
-              <button className="bg-[#7C3AED] text-white font-bold py-4 px-8 rounded-xl hover:opacity-90 transition-opacity">
+              <Link
+                href="/signup"
+                className="bg-[#7C3AED] text-white font-bold py-4 px-8 rounded-xl hover:opacity-90 transition-opacity"
+              >
                 Create your free account
-              </button>
+              </Link>
               <p className="text-[#7C3AED] font-bold cursor-pointer hover:underline">
                 Explore Premium Plans
               </p>

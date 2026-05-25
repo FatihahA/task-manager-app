@@ -19,29 +19,29 @@ router.post("/", async (req, res) => {
       }
     }
     
-    if (new Date(start_time) >= new Date(end_time)) {
-  return res.status(400).json({ error: "Invalid time range" });
+    if (start_time && end_time) {
+  if (new Date(start_time) >= new Date(end_time)) {
+    return res.status(400).json({ error: "Start time must be before end time" });
+  }
 
-    if (start_time && end_time && task_list_id) {
-      const conflictQuery = await prisma.task.findFirst({
-        where: {
-          task_list_id,
-          deleted_at: null,
-          start_time: {
-            lt: new Date(end_time),
-          },
-          end_time: {
-            gt: new Date(start_time),
-          },
-        }
-      })
-      if (conflictQuery) {
-      return res.status(409).json({ error: "Task time conflicts with an existing task in the same list", conflictQuery });
+  if (task_list_id) {
+    const conflictQuery = await prisma.task.findFirst({
+      where: {
+        task_list_id,
+        deleted_at: null,
+        start_time: { lt: new Date(end_time) },
+        end_time: { gt: new Date(start_time) },
+      }
+    });
+
+    if (conflictQuery) {
+      return res.status(409).json({ 
+        error: "Task time conflicts with an existing task in the same list", 
+        conflictQuery 
+      });
     }
-    
+  }
 }
-    }
-
     try {
       const task = await prisma.task.create({
         data:{
@@ -206,4 +206,37 @@ router.post("/", async (req, res) => {
     }
         })
 
-export default router;
+// PATCH /tasks/:id/restore
+router.patch("/:id/restore", async (req, res) => {
+  try {
+    const task = await prisma.task.update({
+      where: { id: parseInt(req.params.id) },
+      data: { deleted_at: null, status: "pending" }
+    })
+    res.json({ message: "Task restored", task })
+  } catch (error) {
+    console.error(error)
+    res.status(404).json({ error: "Task not found" })
+  }
+});
+
+// PATCH /tasks/:id/list_type
+router.patch("/:id/list_type", async (req, res) => {
+  const { list_type } = req.body;
+  const valid = ["daily", "weekly", null]
+  if (!valid.includes(list_type)) {
+    return res.status(400).json({ error: "list_type must be 'daily', 'weekly', or null" })
+  }
+  try {
+    const task = await prisma.task.update({
+      where: { id: parseInt(req.params.id) },
+      data: { list_type }
+    });
+    res.json(task)
+  } catch (error) {
+    console.error(error)
+    res.status(404).json({ error: "Task not found" })
+  }
+});
+
+export default router; 
