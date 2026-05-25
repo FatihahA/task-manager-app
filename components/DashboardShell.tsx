@@ -89,7 +89,7 @@ export default function DashboardShell({
       },
       {
         label: "Folders",
-        href: "/dashboard/folders",
+        href: "/folders",
         icon: <Folder size={18} strokeWidth={2} />,
       },
     ],
