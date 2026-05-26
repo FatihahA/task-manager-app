@@ -58,18 +58,20 @@ router.get("/:id/tasks", async (req, res) => {
     res.status(500).json({ error: "Progress fetch failed" })
   }
 })
- 
-export default router
 
 //DELETE /takslists/:id
 //Soft delete a task list and its tasks
 router.delete("/:id", async (req, res) => {
-    try{
-        await prisma.taskList.delete({
-            where: { id: parseInt(req.params.id) }
-        })
-        res.json({ message: "Task list deleted successfully" })
-    } catch(error) {
-        console.error(error)
-        res.status(500).json({ error: "Failed to delete task list" })
-    }})
+  try {
+    await prisma.taskList.update({
+      where: { id: parseInt(req.params.id) },
+      data: { deleted_at: new Date() }
+    })
+    res.json({ message: "Task list deleted successfully" })
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ error: "Failed to delete task list" })
+  }
+})
+
+export default router
