@@ -1,51 +1,81 @@
-import express, { json } from 'express'
-import cors from 'cors'
-import cron from 'node-cron'
-import prisma from "./db.js"
-import taskRoutes from './routes/route_tasks.js'
-import taskListsRoutes from './routes/routes.js'
-import groupRoutes from './routes/group_routes.js'
-import {runScheduler} from './scheduler.js'
+const express = require('express');
+const pool = require('./db'); // Importing database connection
+const app = express();
 
-const app = express()
-const PORT = process.env.PORT || 3000
+app.use(express.json());
 
-app.use(json())
-app.use(cors())
 
-app.get("/", (req, res) => {
-    res.send("Task Management API is running")
-})
+//------- ROUTES --------
 
-//ROUTES
-app.use("/api/tasks", taskRoutes)
-app.use("/api/tasklists", taskListsRoutes)
-app.use("/api/groups", groupRoutes)
-
-//Scheduler ; runs midnight every day
-// Generates daily + weekly lists and cleans up expired ones
-// Requires: npm install node-cron
-cron.schedule('0 0 * * *', () => {
-    console.log('Running scheduled task');
-    runScheduler();
+// 'Add Task' endpoint - CREATE
+app.post('/tasks', async (req, res) => {
+  try {
+    const { title, description } = req.body;
+    const newTask = await pool.query(
+      'INSERT INTO tasks (title, description) VALUES ($1, $2) RETURNING *',
+      [title, description]
+    );
+    res.json(newTask.rows[0]);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
 });
 
-//Trash cleanup; hard delete after 30 days
-async function purgeOldTrash() {
-    const cutoff = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000) // 30 days ago
-    const deleted = await prisma.task.deleteMany({
-        where: {
-            deletedAt: {
-                lte: cutoff
-            }
-        }
-    });
-    if (deleted.count > 0) {
-    console.log(`Purged ${deleted.count} old tasks from trash`);
-} }
+// 'Get Tasks' endpoint - READ
+app.get('/tasks', async (req, res) => {
+  try {
+    // We use SELECT * to get every column, and ORDER BY to see the newest ones first
+    const allTasks = await pool.query('SELECT * FROM tasks ORDER BY id DESC');
+    
+    // Send the rows back to the user as a JSON array
+    res.json(allTasks.rows);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
 
-purgeOldTrash();
+// 'Mark a task as completed or change the title' endpoint - UPDATE
+app.put('/tasks/:id', async (req, res) => {
 
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`)
-})
+  try {
+    const { id } = req.params; // Get ID from the URL (e.g., /tasks/1)
+    const { is_completed } = req.body; // Get the new status from the JSON body
+
+    const updateTask = await pool.query(
+      'UPDATE tasks SET is_completed = $1 WHERE id = $2 RETURNING *',
+      [is_completed, id]
+    );
+
+    if (updateTask.rows.length === 0) {
+      return res.status(404).json("Task not found");
+    }
+
+    res.json("Task was updated!");
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+
+});
+
+// 'Remove Task' endpoint - DELETE
+app.delete('/tasks/:id', async (req, res) => {
+
+  try {
+    const { id } = req.params;
+    const deleteTask = await pool.query('DELETE FROM tasks WHERE id = $1', [id]);
+   
+    res.json("Task was deleted!");
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+
+});
+
+
+
+app.listen(3000, () => console.log('Server running on port 3000'));
+
