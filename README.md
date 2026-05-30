@@ -11,9 +11,10 @@ TaskPilot is a smart, student-focused task manager built to reduce academic over
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Database-4169E1?style=flat-square&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
 
 ---
+[🚀 Live Demo](https://task-manager-app-zeta-gules.vercel.app/)
 
-[🚀 Live Demo](https://task-manager-app-zeta-gules.vercel.app/) 
-[🐛 Report a Bug](https://github.com/Chinaza0507/task-manager-app/issues) 
+[🐛 Report a Bug](https://github.com/Chinaza0507/task-manager-app/issues)
+
 [💡 Request a Feature](https://github.com/Chinaza0507/task-manager-app/issues)
 
 ---
@@ -134,8 +135,29 @@ task-manager-app/
 └── vercel.json             # Vercel deployment configuration
 ```
 
+## 🔮 Future Improvements
+
+- Mobile app support
+- AI-powered task prioritization
+- Real-time collaboration
+- Dark mode
+
 ---
 
+## 🙏 Acknowledgements
+
+A big thank you to all the contributors who helped build TaskPilot:
+
+- [@Chinaza0507](https://github.com/Chinaza0507)
+- [@oghossgift](https://github.com/oghossgift)
+- [@tblgladiatorthekid](https://github.com/tblgladiatorthekid)
+- [@timsly5](https://github.com/timsly5)
+- [@FatihahA](https://github.com/FatihahA)
+- [@Amarvel17](https://github.com/Amarvel17)
+- [@of-gh](https://github.com/of-gh)
+
+---
+ 
 ## 📄 License
 
 Distributed under the MIT License. See [`LICENSE`](./LICENSE) for more information.
