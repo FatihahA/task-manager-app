@@ -12,7 +12,9 @@ TaskPilot is a smart, student-focused task manager built to reduce academic over
 
 ---
 
-[🚀 Live Demo](https://task-manager-app-zeta-gules.vercel.app/) · [🐛 Report a Bug](https://github.com/Chinaza0507/task-manager-app/issues) · [💡 Request a Feature](https://github.com/Chinaza0507/task-manager-app/issues)
+[🚀 Live Demo](https://task-manager-app-zeta-gules.vercel.app/) 
+[🐛 Report a Bug](https://github.com/Chinaza0507/task-manager-app/issues) 
+[💡 Request a Feature](https://github.com/Chinaza0507/task-manager-app/issues)
 
 ---
 
@@ -23,8 +25,6 @@ TaskPilot is a smart, student-focused task manager built to reduce academic over
 - [Tech Stack](#-tech-stack)
 - [Getting Started](#-getting-started)
 - [Project Structure](#-project-structure)
-- [Roadmap](#-roadmap)
-- [Contributing](#-contributing)
 - [License](#-license)
 
   ## 🎯 About the Project
@@ -117,6 +117,8 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 ---
 
 ## 📁 Project Structure
+
+```
 task-manager-app/
 ├── app/                    # Next.js App Router
 ├── backend/                # Backend logic and API
@@ -130,6 +132,7 @@ task-manager-app/
 ├── tailwind.config.ts      # Tailwind configuration
 ├── tsconfig.json           # TypeScript configuration
 └── vercel.json             # Vercel deployment configuration
+```
 
 ---
 
