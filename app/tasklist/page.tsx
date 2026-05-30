@@ -122,7 +122,15 @@ export default function TaskListPage() {
             Manage your academic journey with calm and focus
           </p>
         </div>
-        <StudyGroupActivePill extraCount={3} />
+        <div className="flex flex-wrap items-center gap-3">
+          <a
+            href="/tasklist/add"
+            className="inline-flex items-center justify-center rounded-full bg-[#7C3AED] text-white text-[13px] font-semibold px-5 py-2 hover:opacity-90"
+          >
+            + Add Task
+          </a>
+          <StudyGroupActivePill extraCount={3} />
+        </div>
       </div>
 
       <div className="mt-6 flex flex-wrap items-center gap-3">
