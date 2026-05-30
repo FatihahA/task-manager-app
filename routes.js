@@ -43,11 +43,11 @@ router.get("/:id/tasks", async (req, res) => {
 
     router.get("/:id/progress", async (req, res) => {
         try {
-            const totalTasks = await prisma.task.count({
+            const total = await prisma.task.count({
                 where: {task_list_id: parseInt(req.params.id), deleted_at: null}
             })
 
-            const completedTasks = await prisma.task.count({
+            const completed = await prisma.task.count({
                 where: {task_list_id: parseInt(req.params.id), status: "completed", deleted_at: null} 
             })
 
@@ -60,3 +60,16 @@ router.get("/:id/tasks", async (req, res) => {
 })
  
 export default router
+
+//DELETE /takslists/:id
+//Soft delete a task list and its tasks
+router.delete("/:id", async (req, res) => {
+    try{
+        await prisma.taskList.delete({
+            where: { id: parseInt(req.params.id) }
+        })
+        res.json({ message: "Task list deleted successfully" })
+    } catch(error) {
+        console.error(error)
+        res.status(500).json({ error: "Failed to delete task list" })
+    }})

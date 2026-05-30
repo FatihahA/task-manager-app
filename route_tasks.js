@@ -207,3 +207,40 @@ router.post("/", async (req, res) => {
         })
 
 export default router;
+
+// PATCH /tasks/:id/restore
+// Restore a soft-deleted task from trash back to active
+router.patch("/:id/restore", async (req, res) => {
+  try {
+    const task = await prisma.task.update({
+      where: { id: parseInt(req.params.id) },
+      data: { deleted_at: null, status: "pending" }
+    })
+    res.json({ message: "Task restored", task })
+  } catch (error) {
+    console.error(error)
+    res.status(404).json({ error: "Task not found" })
+  }
+});
+ 
+// PATCH /tasks/:id/list_type
+// Manually override scheduling — "daily", "weekly", or null to revert to auto
+router.patch("/:id/list_type", async (req, res) => {
+  const { list_type } = req.body;
+ 
+  const valid = ["daily", "weekly", null]
+  if (!valid.includes(list_type)) {
+    return res.status(400).json({ error: "list_type must be 'daily', 'weekly', or null" })
+  }
+ 
+  try {
+    const task = await prisma.task.update({
+      where: { id: parseInt(req.params.id) },
+      data: { list_type }
+    });
+    res.json(task)
+  } catch (error) {
+    console.error(error)
+    res.status(404).json({ error: "Task not found" })
+  }
+})
