@@ -26,8 +26,11 @@ TaskPilot is a smart, student-focused task manager built to reduce academic over
 - [Tech Stack](#-tech-stack)
 - [Getting Started](#-getting-started)
 - [Project Structure](#-project-structure)
+- [Future Improvements](#-future-improvements)
+- [Acknowledgements](#-acknowledgements)
 - [License](#-license)
 
+  
   ## 🎯 About the Project
 
 Managing university life is hard. Between lectures, assignments, group projects, and deadlines across multiple courses, students often feel overwhelmed and disorganized.
