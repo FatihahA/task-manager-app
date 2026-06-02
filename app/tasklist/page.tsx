@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import StudyGroupActivePill from "@/components/StudyGroupActivePill";
 import FilterChip from "./_components/FilterChip";
 import TaskListCard from "./_components/TaskListCard";
@@ -22,6 +22,16 @@ type Task = {
   progressLabel?: string;
   progressValue?: number;
   completed?: boolean;
+};
+
+type ApiTask = {
+  id: number | string;
+  title: string;
+  description?: string | null;
+  is_completed?: boolean;
+  completed?: boolean;
+  deadline?: string | null;
+  created_at?: string | null;
 };
 
 type FilterKey =
@@ -83,9 +93,105 @@ const INITIAL_TASKS: Task[] = [
   },
 ];
 
+const API_URL =
+  process.env.NEXT_PUBLIC_API_URL?.replace(/\/$/, "") ??
+  "https://capable-reverence-production.up.railway.app";
+
+function getDueLabel(dateValue?: string | null) {
+  if (!dateValue) return "No deadline";
+
+  const dueDate = new Date(dateValue);
+  if (Number.isNaN(dueDate.getTime())) return "No deadline";
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const dueDay = new Date(dueDate);
+  dueDay.setHours(0, 0, 0, 0);
+
+  const daysUntilDue = Math.round(
+    (dueDay.getTime() - today.getTime()) / (1000 * 60 * 60 * 24),
+  );
+
+  if (daysUntilDue < 0) return "Overdue";
+  if (daysUntilDue === 0) return "Due Today";
+  if (daysUntilDue === 1) return "Due Tomorrow";
+
+  return `Due ${dueDate.toLocaleDateString(undefined, {
+    month: "short",
+    day: "numeric",
+  })}`;
+}
+
+function isDueSoon(dateValue?: string | null) {
+  if (!dateValue) return false;
+
+  const dueDate = new Date(dateValue);
+  if (Number.isNaN(dueDate.getTime())) return false;
+
+  const now = Date.now();
+  const dueTime = dueDate.getTime();
+  const in48Hours = now + 48 * 60 * 60 * 1000;
+
+  return dueTime >= now && dueTime <= in48Hours;
+}
+
+function mapApiTask(task: ApiTask): Task {
+  const dueSoon = isDueSoon(task.deadline);
+
+  return {
+    id: String(task.id),
+    title: task.title,
+    description: task.description ?? "",
+    category: "Mathematics",
+    priority: dueSoon ? "High" : "Medium",
+    dueLabel: getDueLabel(task.deadline ?? task.created_at),
+    dueSoon,
+    completed: task.completed ?? task.is_completed ?? false,
+  };
+}
+
 export default function TaskListPage() {
   const [activeFilter, setActiveFilter] = useState<FilterKey>("All Tasks");
   const [tasks, setTasks] = useState<Task[]>(INITIAL_TASKS);
+  const [isLoadingTasks, setIsLoadingTasks] = useState(true);
+  const [taskFetchError, setTaskFetchError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let ignore = false;
+
+    async function fetchTasks() {
+      setIsLoadingTasks(true);
+      setTaskFetchError(null);
+
+      try {
+        const response = await fetch(`${API_URL}/tasks`);
+        if (!response.ok) {
+          throw new Error("Could not fetch tasks from the backend.");
+        }
+
+        const apiTasks: ApiTask[] = await response.json();
+        if (!ignore) {
+          setTasks(apiTasks.map(mapApiTask));
+        }
+      } catch (error) {
+        console.error("Task fetch failed:", error);
+        if (!ignore) {
+          setTaskFetchError(
+            "Showing sample tasks because the backend is not available.",
+          );
+        }
+      } finally {
+        if (!ignore) setIsLoadingTasks(false);
+      }
+    }
+
+    fetchTasks();
+
+    return () => {
+      ignore = true;
+    };
+  }, []);
 
   const filteredTasks = useMemo(() => {
     switch (activeFilter) {
@@ -105,12 +211,37 @@ export default function TaskListPage() {
   const openTasks = filteredTasks.filter((task) => !task.completed);
   const completedTasks = filteredTasks.filter((task) => task.completed);
 
-  const toggleTask = (id: string) => {
+  const toggleTask = async (id: string) => {
+    const task = tasks.find((currentTask) => currentTask.id === id);
+    if (!task) return;
+
+    const nextCompleted = !task.completed;
+
     setTasks((prev) =>
       prev.map((task) =>
-        task.id === id ? { ...task, completed: !task.completed } : task,
+        task.id === id ? { ...task, completed: nextCompleted } : task,
       ),
     );
+
+    try {
+      const response = await fetch(`${API_URL}/tasks/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ is_completed: nextCompleted }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Task update failed.");
+      }
+    } catch (error) {
+      console.error("Task update failed:", error);
+      setTasks((prev) =>
+        prev.map((task) =>
+          task.id === id ? { ...task, completed: !nextCompleted } : task,
+        ),
+      );
+      setTaskFetchError("Could not update the task. Please try again.");
+    }
   };
 
   return (
@@ -174,13 +305,25 @@ export default function TaskListPage() {
         </div>
       </div>
 
+      {(isLoadingTasks || taskFetchError) && (
+        <div className="mt-4 text-[13px] font-medium text-[#6B7280]">
+          {isLoadingTasks ? "Loading tasks..." : taskFetchError}
+        </div>
+      )}
+
       <div className="mt-8 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_380px] gap-8">
         <div className="space-y-6">
+          {!isLoadingTasks && filteredTasks.length === 0 && (
+            <div className="rounded-2xl border border-[#E7E1F2] bg-white px-6 py-8 text-center text-[#6B7280]">
+              No tasks found.
+            </div>
+          )}
+
           {openTasks.map((task) =>
             task.progressValue !== undefined ? (
               <ProgressTaskCard
                 key={task.id}
-                checked={false}
+                checked={task.completed ?? false}
                 onToggle={() => toggleTask(task.id)}
                 category={task.category}
                 priority={task.priority}
@@ -194,7 +337,7 @@ export default function TaskListPage() {
             ) : (
               <TaskListCard
                 key={task.id}
-                checked={false}
+                checked={task.completed ?? false}
                 onToggle={() => toggleTask(task.id)}
                 category={task.category}
                 priority={task.priority}
